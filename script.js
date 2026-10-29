@@ -30,6 +30,14 @@
 // STEP 5: Display the day name in the element with ID "warmUpDate"
 //         using document.getElementById("warmUpDate").innerHTML
 
+let now = new Date();
+let dayNumber = now.getDay();
+
+let days = ["Sunday", "Monday", "Tuesday", "Wednesday",
+            "Thursday", "Friday", "Saturday"];
+
+let dayName = days[dayNumber];
+document.getElementById("warmUpDate").innerHTML = dayName;
 
 // ============================================
 //  PART 1: Current Date Display
@@ -51,6 +59,12 @@
 // STEP 10: Build the date string: month + "/" + day + "/" + year
 //          Display it in the element with ID "myDate"
 
+let month = now.getMonth() + 1;
+let day = now.getDate();
+let year = now.getFullYear();
+
+document.getElementById("myDate").innerHTML =
+    month + "/" + day + "/" + year;
 
 // ============================================
 //  PART 2: Elapsed Timer
@@ -70,6 +84,17 @@
 //          c) Display the elapsed time using .toFixed(3)
 //             in the element with ID "myTimer"
 
+let startTime = new Date().getTime();
+
+function updateTimer() {
+    let currentTime = new Date().getTime();
+    let elapsedSeconds = (currentTime - startTime) / 1000;
+
+    document.getElementById("myTimer").innerHTML =
+        elapsedSeconds.toFixed(3);
+}
+
+let timerId = setInterval(updateTimer, 10);
 
 // ============================================
 //  PART 3: Start/Stop Toggle Button
@@ -95,3 +120,19 @@
 //             - Start a new setInterval (same as STEP 12)
 //             - Change button innerHTML to "Stop"
 //             - Set running to true
+
+let running = true;
+
+document.getElementById("myBtn").addEventListener("click", function () {
+    if (running) {
+        clearInterval(timerId);
+        document.getElementById("myBtn").innerHTML = "Start";
+        running = false;
+    } else {
+        startTime = new Date().getTime();
+        document.getElementById("myTimer").innerHTML = "0.000";
+        timerId = setInterval(updateTimer, 10);
+        document.getElementById("myBtn").innerHTML = "Stop";
+        running = true;
+    }
+});
